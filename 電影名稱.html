@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Russo+One&family=Zen+Kurenaido&display=swap" rel="stylesheet">
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto Mono', monospace;
+    }
+
+    html,
+    body {
+      height: 100vh;
+    }
+
+    body {
+      background-image: url("images/背景2.png") ;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size:cover;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    #game {
+      width: 1700px;
+      height: 460px;
+      /* border: 1px solid #fff; */
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card {
+      width: 350px;
+      height: 200px;
+      position: relative;
+      /* 設定子元素在 3D 空間內 */
+      transform-style: preserve-3d;
+      float: left;
+      margin: 5px 15px;
+      transition: .5s;
+      border: 1px solid #000;
+      box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    .card-front {
+      width: 100%;
+      height: 100%;
+      background-image: url(./撲克牌/1H.jpg);
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      position: absolute;
+      /* 把花色翻轉到下面 */
+      transform: rotateY(180deg);
+      /* 翻過來後隱藏另一面 */
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    .card-back:hover {
+      cursor: pointer;
+    }
+
+    .card-back {
+      width: 100%;
+      height: 100%;
+      background-image: url(./images/家非.jpg);
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      position: absolute;
+      /* 翻過來後隱藏另一面 */
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    .card-open {
+      transform: rotateY(180deg);
+    }
+
+    #title {
+      width:1360px;
+      height: 80px;
+      border-width: 5px 15px 15px 4px;
+      border-style: solid;
+      border-color: #666 #999 #888 #777;
+      color: white;
+      font-size: 3rem;
+      font-style: italic;
+      text-align: center;
+      line-height: 50px;
+      letter-spacing: 3px;
+      padding-right: 15px;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 55px 35px 55px 35px;
+      box-shadow:5px 5px 5px rgba(0, 0, 0, 0.5);
+      text-shadow: 3px 3px 10px rgba(255, 255, 255, 0.5);
+      margin-bottom: 5px;
+      margin-top: 3px;
+    }
+
+    #menu {
+      /* border: #ffa solid 1px; */
+      width: 1200px;
+      height: 40px;
+      display: flex;
+      justify-content: space-evenly;
+    }
+
+    .btn{
+      height: 40px;
+      width: 300px;
+      border-radius: 10px;
+      letter-spacing: 8px;
+      font-size: 1.5rem;
+      font-weight: 800;
+      background-color:#ffffff;
+      box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.5);
+      transition: .5s;
+      border: 2px solid #333;
+    }
+
+    .btn:hover {
+      margin-left: -3px;
+      margin-top: -3px;
+      background-color:slategrey;
+      color: white;
+      border: 3px solid #ccc;
+      font-size: 1.4rem;
+      letter-spacing: 15px;
+      padding-left: 15px;
+      box-shadow: 2px 2px 8px rgba(255, 255, 255, 0.5);
+    }
+
+    #answer {
+      width: 900px;
+      height: 370px;
+      /* border: 1px solid #ffa; */
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      padding-bottom: 100px;
+    }
+
+    #answer #movieName {
+      width: 400px;
+      height: 55px;
+      font-size: 2rem;
+      border-radius: 10px;
+      font-weight: 800;
+      letter-spacing: 5px;
+      text-indent: 25px;
+      outline: 3px solid #fff;
+      outline-offset: 1px;
+      border: 2px solid #000;
+    }
+
+    #answer #confirmButton {
+      width: 200px;
+      height: 55px;
+      font-size: 1.3rem;
+      border-radius: 35px;
+      transition: .5s;
+      border: 2px solid #fff;
+      font-weight: 900;
+      /* background-color:rgb(133, 168, 62); */
+      letter-spacing: 3px;
+      box-shadow: 5px 5px 5px rgba(24, 27, 24, 0.5);
+      background: 
+      linear-gradient(217deg, rgba(255,0,0,.9), rgba(255,0,0,0.3) 70.71%),
+      linear-gradient(127deg, rgba(0,255,0,.9), rgba(0,255,0,0.3) 70.71%),
+      linear-gradient(336deg, rgba(0,0,255,.9), rgba(0,0,255,0.3) 70.71%);
+      outline: 3px solid #000;
+    }
+
+    #answer #confirmButton:hover{
+      background-color: rgb(71, 87, 38);
+      color: white;
+      border: 2px solid #000;
+      outline: 2px solid #fff;
+      filter: hue-rotate(180deg);
+    }
+  </style>
+</head>
+<body>
+  <h1 id="title">Classic Stephen Chow Movies</h1>
+  <div id="menu">
+    <a href="./星爺語錄.html"><input class="btn" type="button" value="電影配對"></a>
+    <a href="./電影名稱.html"><input class="btn" type="button" value="猜電影"></a>
+    <a href="./台詞大考驗.html"><input class="btn" type="button" value="台詞大考驗"></a>
+  </div>
+  <div id="game"></div>
+  <div id="answer">
+    <input id="movieName" type="text" value="" placeholder="請輸入電影名稱">
+    <input id="confirmButton" type="button" value="確認/返回">
+  </div>
+  <script src="./jquery-3.6.0.min.js"></script>
+  <script src="http://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+
+      const movieName = document.getElementById('movieName')
+      const confirmButton = document.getElementById('confirmButton')
+    
+    // 產生 8 張卡片
+    for (let i = 0; i < 8; i++) {
+      $('#game').append(`
+        <div class="card">
+          <div class="card-front"></div>
+          <div class="card-back"></div>
+        </div>
+      `)
+    }
+    // 決定數字並打散
+    for (let i = 0; i < 8; i++) {
+      // 決定數字
+      const num = i 
+      $('.card').eq(i).find('.card-front').css('background-image', `url(./images/${num+1}H.gif)`)
+      $('.card').eq(i).attr('data-card', num+1)
+
+      // 打散
+      const target = Math.round(Math.random() * 15)
+      $('.card').eq(target).insertAfter($('.card').eq(i))
+    }
+
+    // Enter 鍵觸發按鈕點擊事件
+    document.onkeydown = event => {
+      const key = event.key
+      const code = event.code
+      if (key === 'Enter') confirmButton.onclick()
+    }
+
+    // 翻牌
+    confirmButton.onclick = () => {
+      // 若點到按鈕兩次，卡片會提早變成反面，就不會讓透明度=0
+      // 於是新增 每次點擊按鈕就偵測有無 card-open 又有 card-front 的卡片並讓他透明化
+      $('.card-open').each(function() {
+    if ($(this).find('.card-front').css('opacity') != 1) {
+    $(this).css('opacity', 0)
+    }
+    })
+        if (movieName.value === '唐伯虎點秋香') {
+          if ($('.card-open').attr('data-card') === "4") {
+            $('.card-open').addClass('card-ok')
+            $('.card-open .card-front').fadeTo(1000, 0)
+            movieName.value = ""
+            $('.card-open').css("pointer-events","none")
+          setTimeout(() => {
+        //   // 如果 .card-open 裡的 card-front 透明度不是 1，把 .card-open 透明度設為 0
+        //   // .each() 類似 for of，裡面的 $(this) 代表迴圈正在跑的元素
+          $('.card-open').each(function() {
+            if ($(this).find('.card-front').css('opacity') != 1) {
+              $(this).css('opacity', 0)
+              $('.card-open').removeClass('card-open')
+            }
+          })
+          if ($('.card-ok').length === 8) {
+            Swal.fire({
+              title: '恭喜過關'
+            })
+            $('body').css('background-image','url("./images/結束福利.jpg")')
+          }
+        }, 1000)
+          } 
+        } else if (movieName.value === '食神') {
+          if ($('.card-open').attr('data-card') === "6") {
+            $('.card-open').addClass('card-ok')
+            $('.card-open .card-front').fadeTo(1000, 0)
+            movieName.value = ""
+            $('.card-open').css("pointer-events","none")
+          setTimeout(() => {
+        //   // 如果 .card-open 裡的 card-front 透明度不是 1，把 .card-open 透明度設為 0
+        //   // .each() 類似 for of，裡面的 $(this) 代表迴圈正在跑的元素
+          $('.card-open').each(function() {
+            if ($(this).find('.card-front').css('opacity') != 1) {
+              $(this).css('opacity', 0)
+              $('.card-open').removeClass('card-open')
+            }
+          })
+          if ($('.card-ok').length === 8) {
+            Swal.fire({
+              title: '恭喜過關'
+            })
+            $('body').css('background-image','url("./images/結束福利.jpg")')
+          }
+        }, 1000)
+          } 
+        } else if (movieName.value === '功夫') {
+          if ($('.card-open').attr('data-card') === "8") {
+            $('.card-open').addClass('card-ok')
+            $('.card-open .card-front').fadeTo(1000, 0)
+            movieName.value = ""
+            $('.card-open').css("pointer-events","none")
+          setTimeout(() => {
+        //   // 如果 .card-open 裡的 card-front 透明度不是 1，把 .card-open 透明度設為 0
+        //   // .each() 類似 for of，裡面的 $(this) 代表迴圈正在跑的元素
+          $('.card-open').each(function() {
+            if ($(this).find('.card-front').css('opacity') != 1) {
+              $(this).css('opacity', 0)
+              $('.card-open').removeClass('card-open')
+            }
+          })
+          if ($('.card-ok').length === 8) {
+            Swal.fire({
+              title: '恭喜過關'
+            })
+            $('body').css('background-image','url("./images/結束福利.jpg")')
+          }
+        }, 1000)
+          } 
+        } else if (movieName.value === '九品芝麻官') {
+          if ($('.card-open').attr('data-card') === "2") {
+            $('.card-open').addClass('card-ok')
+            $('.card-open .card-front').fadeTo(1000, 0)
+            movieName.value = ""
+            $('.card-open').css("pointer-events","none")
+          setTimeout(() => {
+        //   // 如果 .card-open 裡的 card-front 透明度不是 1，把 .card-open 透明度設為 0
+        //   // .each() 類似 for of，裡面的 $(this) 代表迴圈正在跑的元素
+          $('.card-open').each(function() {
+            if ($(this).find('.card-front').css('opacity') != 1) {
+              $(this).css('opacity', 0)
+              $('.card-open').removeClass('card-open')
+            }
+          })
+          if ($('.card-ok').length === 8) {
+            Swal.fire({
+              title: '恭喜過關'
+            })
+            $('body').css('background-image','url("./images/結束福利.jpg")')
+          }
+        }, 1000)
+          }
+        } else if (movieName.value === '少林足球') {
+          if ($('.card-open').attr('data-card') === "1") {
+            $('.card-open').addClass('card-ok')
+            $('.card-open .card-front').fadeTo(1000, 0)
+            movieName.value = ""
+            $('.card-open').css("pointer-events","none")
+          setTimeout(() => {
+        //   // 如果 .card-open 裡的 card-front 透明度不是 1，把 .card-open 透明度設為 0
+        //   // .each() 類似 for of，裡面的 $(this) 代表迴圈正在跑的元素
+          $('.card-open').each(function() {
+            if ($(this).find('.card-front').css('opacity') != 1) {
+              $(this).css('opacity', 0)
+              $('.card-open').removeClass('card-open')
+            }
+          })
+          if ($('.card-ok').length === 8) {
+            Swal.fire({
+              title: '恭喜過關'
+            })
+            $('body').css('background-image','url("./images/結束福利.jpg")')
+          }
+        }, 1000)
+          }
+        } else if (movieName.value === '國產凌凌漆' ||movieName.value === '凌凌漆大戰金鎗客') {
+          if ($('.card-open').attr('data-card') === "7") {
+            $('.card-open').addClass('card-ok')
+            $('.card-open .card-front').fadeTo(1000, 0)
+            movieName.value = ""
+            $('.card-open').css("pointer-events","none")
+          setTimeout(() => {
+        //   // 如果 .card-open 裡的 card-front 透明度不是 1，把 .card-open 透明度設為 0
+        //   // .each() 類似 for of，裡面的 $(this) 代表迴圈正在跑的元素
+          $('.card-open').each(function() {
+            if ($(this).find('.card-front').css('opacity') != 1) {
+              $(this).css('opacity', 0)
+              $('.card-open').removeClass('card-open')
+            }
+          })
+          if ($('.card-ok').length === 8) {
+            Swal.fire({
+              title: '恭喜過關'
+            })
+            $('body').css('background-image','url("./images/結束福利.jpg")')
+          }
+        }, 1000)
+          }
+        } else if(movieName.value === '破壞之王') {
+          if ($('.card-open').attr('data-card') === "5") {
+            $('.card-open').addClass('card-ok')
+            $('.card-open .card-front').fadeTo(1000, 0)
+            movieName.value = ""
+            $('.card-open').css("pointer-events","none")
+          setTimeout(() => {
+        //   // 如果 .card-open 裡的 card-front 透明度不是 1，把 .card-open 透明度設為 0
+        //   // .each() 類似 for of，裡面的 $(this) 代表迴圈正在跑的元素
+          $('.card-open').each(function() {
+            if ($(this).find('.card-front').css('opacity') != 1) {
+              $(this).css('opacity', 0)
+              $('.card-open').removeClass('card-open')
+            }
+          })
+          if ($('.card-ok').length === 8) {
+            Swal.fire({
+              title: '恭喜過關'
+            })
+            $('body').css('background-image','url("./images/結束福利.jpg")')
+          }
+        }, 1000)
+          }
+        } else if (movieName.value === '大話西遊') {
+          if ($('.card-open').attr('data-card') === "3") {
+            $('.card-open').addClass('card-ok')
+            $('.card-open .card-front').fadeTo(1000, 0)
+            movieName.value = ""
+            $('.card-open').css("pointer-events","none")
+          setTimeout(() => {
+        //   // 如果 .card-open 裡的 card-front 透明度不是 1，把 .card-open 透明度設為 0
+        //   // .each() 類似 for of，裡面的 $(this) 代表迴圈正在跑的元素
+          $('.card-open').each(function() {
+            if ($(this).find('.card-front').css('opacity') != 1) {
+              $(this).css('opacity', 0)
+              $('.card-open').removeClass('card-open')
+            }
+          })
+          if ($('.card-ok').length === 8) {
+            Swal.fire({
+              title: '恭喜過關'
+            })
+            $('body').css('background-image','url("./images/結束福利.jpg")')
+          }
+        }, 1000)
+          }
+        } else {
+          $('.card-open').removeClass('card-open')
+        }
+      }
+
+    $('#game').on('click', '.card', function() {
+      // 最多只能翻一張牌，且這張牌還沒翻開
+      if ( $('.card-open').length < 1 && !$(this).hasClass('card-open')) {
+        $(this).addClass('card-open')
+      }
+      // 點選已翻開的牌可以讓它翻回背面。
+      else if ( $('.card').hasClass('card-open')) {
+        $(this).removeClass('card-open')
+      } 
+    })
+  </script>
+</body>
+</html>
